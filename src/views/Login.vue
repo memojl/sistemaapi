@@ -53,8 +53,8 @@ export default {
               "password": this.password
           }
           console.log(json)
-          //axios.post('http://localhost/MisSitios/apirest/auth', json)
-          axios.post('https://apirestsys.herokuapp.com/auth',json)
+          //axios.post('https://apirestsys.herokuapp.com/auth',json)
+          axios.post('http://localhost/MisSitios/apirest/auth', json)
           .then(data => {
               console.log(data);
           })
