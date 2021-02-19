@@ -1,5 +1,6 @@
 <template>
   <div class="login">
+    <MenuWeb/>
     <!--h1>Login</h1-->
 
 <div class="wrapper fadeInDown">
@@ -13,11 +14,15 @@
 
     <!-- Login Form -->
     <form v-on:submit.prevent="login">
-      <input type="text" id="usuario" class="fadeIn second" name="login" placeholder="usuario" v-model="usuario">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password" v-model="password">
+      <input type="text" id="usuario" class="fadeIn second" name="login" placeholder="usuario" v-model="usuario" required>
+      <input type="text" id="password" class="fadeIn third" name="login" placeholder="password" v-model="password" required autocomplete="off">
       <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
-
+    <div class="container">
+      <div class="alert alert-danger" role="alert" v-if="error">
+        {{error_msg}}
+      </div>
+    </div>
     <!-- Remind Passowrd -->
     <div id="formFooter">
       <a class="underlineHover" href="#">Forgot Password?</a>
@@ -31,12 +36,13 @@
 </template>
 
 <script>
+import MenuWeb from '@/components/MenuWeb.vue'
 import axios from 'axios';
 
 export default {
   name: 'Login',
   components: {
-
+    MenuWeb
   },
   data: function(){
       return {
@@ -52,10 +58,17 @@ export default {
               "usuario": this.usuario,
               "password": this.password
           }
-          console.log(json)
+          //console.log(json)
           axios.post('http://localhost/MisSitios/apirest/auth', json)
           .then(data => {
-              console.log(data);
+            if(data.data.status == 'ok'){
+              console.log('Todo correcto')
+              localStorage.token = data.data.result.token;
+              this.$router.push('dashboard');
+            }else{
+              this.error = true;
+              this.error_msg = data.data.result.error_msg;
+            }
           })
 
       }
