@@ -1,7 +1,7 @@
 <template>
     <div class="Nuevo">
         <Header/>
-        <h1>Nuevo</h1>
+        <h1>Nuevo Paciente</h1>
         <div class="container">
             <form action="" class="">
             <div class="row">    
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
@@ -77,10 +77,63 @@ export default {
       Header,
       Footer
   },
+  data:function(){
+      return{
+          //pacienteId: null,
+          form:{
+            "nombre": "",
+            "dni": "",
+            "correo": "",
+            "direccion": "",
+            "codigoPostal": "",
+            "genero": "",
+            "telefono": "",
+            "fechaNacimiento": "",
+            "token": ""
+          }
+      }
+  },
+  methods: {
+      add(){
+        let url = 'http://localhost/MisSitios/apirest/pacientes';
+        this.form.token = localStorage.getItem('token');        
+        axios.post(url,this.form).then(data =>{
+            const  {statusText} = data;
+            console.log(statusText);
+            if(statusText=='OK'){
+                this.makeToast('Hecho','Paciente creado','success');
+                this.$router.push('/dashboard');
+            }
+        }).catch(e=>{
+            console.log(e);
+            this.makeToast('Error','Error al guardar','danger');
+        });
+      },
+      cancelar(){
+          this.$router.push('/dashboard');
+      },
+      makeToast(titulo,texto,tipo) {
+        this.toastCount++
+        this.$bvToast.toast(texto, {
+          title: titulo,
+          variant: tipo,
+          autoHideDelay: 5000,
+          appendToast: true
+        })       
+      }
+  },
+  mounted:function(){
+      const token = localStorage.getItem('token');        
+      if(token==null){
+        this.$router.push('/');
+      }else{
+        this.form.token = token;
+      }
+   }
 }
 </script>
 <style>
-.Editar{
+.Nuevo{
     padding-bottom: 100px;
 }
 .btn{

@@ -1,7 +1,7 @@
 <template>
     <div class="Editar">
         <Header/>
-        <h1>Editar</h1>
+        <h1>Editar Paciente</h1>
         <div class="container">
             <form action="" class="">
             <div class="row">    
@@ -101,11 +101,14 @@ export default {
         axios.put(url,this.form).then(data =>{
             const  {statusText} = data;
             console.log(statusText);
-            //if(statusText=='OK'){this.$router.push('/dashboard/');}
+            if(statusText=='OK'){
+                this.makeToast('Hecho','Paciente creado','success');
+                this.$router.push('/dashboard');
+            }
+        }).catch(e=>{
+            console.log(e);
+            this.makeToast('Error','Error al guardar','danger');
         });
-      },
-      cancelar(){
-          this.$router.push('/dashboard/');
       },
       eliminar(){
           let url = 'http://localhost/MisSitios/apirest/pacientes';
@@ -117,8 +120,20 @@ export default {
           axios.delete(url,{ headers: enviar }).then(data=>{
             const  {statusText} = data;
             console.log(statusText);
-            if(statusText=='OK'){this.$router.push('/dashboard/');}
+            if(statusText=='OK'){this.$router.push('/dashboard');}
           });
+      },
+      cancelar(){
+          this.$router.push('/dashboard');
+      },
+      makeToast(titulo,texto,tipo) {
+        this.toastCount++
+        this.$bvToast.toast(texto, {
+          title: titulo,
+          variant: tipo,
+          autoHideDelay: 5000,
+          appendToast: true
+        })       
       }
   },
   mounted:function(){
@@ -147,7 +162,6 @@ export default {
   }
 }
 </script>
-
 
 <style>
 .Editar{
