@@ -1,7 +1,7 @@
 <template>
-    <div class="Editar">
+    <div class="Nuevo">
         <Header/>
-        <h1>Editar</h1>
+        <h1>Nuevo</h1>
         <div class="container">
             <form action="" class="">
             <div class="row">    
@@ -55,8 +55,7 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group text-right">
-                        <button type="button" class="btn btn-primary" v-on:click="editar()">Guardar</button>
-                        <button type="button" class="btn btn-danger" v-on:click="eliminar()">Eliminar</button>
+                        <button type="button" class="btn btn-primary" v-on:click="add()">Guardar</button>
                         <button type="button" class="btn btn-light" v-on:click="cancelar()">Cancelar</button>
                     </div>
                 </div>
@@ -68,87 +67,18 @@
 </template>
 
 <script>
-import axios from 'axios'
+//import axios from 'axios'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
 export default {
-  name: 'Editar',
+  name: 'Nuevo',
   components: {
       Header,
       Footer
   },
-  data:function(){
-      return{
-          //pacienteId: null,
-          form:{
-            "pacienteId": "",
-            "nombre": "",
-            "dni": "",
-            "correo": "",
-            "direccion": "",
-            "codigoPostal": "",
-            "genero": "",
-            "telefono": "",
-            "fechaNacimiento": "",
-            "token": ""
-          }
-      }
-  },
-  methods: {
-      editar(){
-        let url = 'http://localhost/MisSitios/apirest/pacientes';
-        axios.put(url,this.form).then(data =>{
-            const  {statusText} = data;
-            console.log(statusText);
-            //if(statusText=='OK'){this.$router.push('/dashboard/');}
-        });
-      },
-      cancelar(){
-          this.$router.push('/dashboard/');
-      },
-      eliminar(){
-          let url = 'http://localhost/MisSitios/apirest/pacientes';
-          var enviar = {
-              "token": this.form.token,
-              "pacienteId": this.form.pacienteId
-          };
-          console.log(enviar);
-          axios.delete(url,{ headers: enviar }).then(data=>{
-            const  {statusText} = data;
-            console.log(statusText);
-            if(statusText=='OK'){this.$router.push('/dashboard/');}
-          });
-      }
-  },
-  mounted:function(){
-      let pacienteId = this.$route.params.id;      
-      let url = 'http://localhost/MisSitios/apirest/pacientes?id='+pacienteId;
-      this.form.pacienteId = pacienteId;
-      const token = localStorage.getItem('token');        
-      if(token==null){
-        this.$router.push('/');
-      }else{
-        this.form.token = token;
-      }
-      axios.get(url).then(data =>{
-        
-        this.form.nombre = data.data[0].Nombre;
-        this.form.dni = data.data[0].DNI;
-        this.form.correo = data.data[0].Correo;
-        this.form.direccion = data.data[0].Direccion;
-        this.form.codigoPostal = data.data[0].CodigoPostal;
-        this.form.genero = data.data[0].Genero;
-        this.form.telefono = data.data[0].Telefono;
-        this.form.fechaNacimiento = data.data[0].FechaNacimiento;
-        
-        console.log(this.form);
-      });
-  }
 }
 </script>
-
-
 <style>
 .Editar{
     padding-bottom: 100px;

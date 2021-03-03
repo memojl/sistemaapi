@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Dashboard from '../views/Dashboard.vue'
 import Editar from '../views/Editar.vue'
+import Nuevo from '../views/Nuevo.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/editar/:id',
     name: 'Editar',
     component: Editar
+  },
+  {
+    path: '/nuevo',
+    name: 'Nuevo',
+    component: Nuevo
   },
   {
     path: '/about',
