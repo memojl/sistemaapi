@@ -12,6 +12,7 @@
       <th scope="col">DNI</th>
       <th scope="col">TELEFONO</th>
       <th scope="col">EMAIL</th>
+      <th scope="col">ELIMINAR</th>
     </tr>
   </thead>
   <tbody>
@@ -21,8 +22,8 @@
       <td>{{paciente.DNI}}</td>
       <td>{{paciente.Telefono}}</td>
       <td>{{paciente.Correo}}</td>
+      <td><button class="btn btn-danger">X</button></td>
     </tr>
-
   </tbody>
 </table>
 </div>
@@ -54,6 +55,10 @@ export default {
     }
   },
   mounted: function(){
+    const token = localStorage.getItem('token');        
+    if(token==null){
+      this.$router.push('/');
+    }
     let url = 'http://localhost/MisSitios/apirest/pacientes?page='+this.pagina;
     axios.get(url).then(data =>{
       this.Lista = data.data;
@@ -62,4 +67,7 @@ export default {
 }
 </script>
 <style>
+tr{
+  cursor: pointer;
+}
 </style>
